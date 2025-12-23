@@ -2,9 +2,14 @@
 import { useEffect, useState } from "react";
 
 export default function CurrentTimeAlarm() {
-  const [time, setTime] = useState(new Date());
+  // Initialize with null to prevent hydration mismatch
+  const [time, setTime] = useState<Date | null>(null);
 
   useEffect(() => {
+    // Set initial time immediately when component mounts on client
+    setTime(new Date());
+
+    // Update time every second
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
@@ -12,9 +17,10 @@ export default function CurrentTimeAlarm() {
     return () => clearInterval(interval);
   }, []);
 
-  const seconds = time.getSeconds();
-  const minutes = time.getMinutes();
-  const hours = time.getHours();
+  // If time is not yet set (during SSR or initial render), use fallback values
+  const seconds = time?.getSeconds() ?? 0;
+  const minutes = time?.getMinutes() ?? 0;
+  const hours = time?.getHours() ?? 0;
 
   const secondDeg = seconds * 6;
   const minuteDeg = minutes * 6 + seconds * 0.1;
@@ -59,7 +65,7 @@ export default function CurrentTimeAlarm() {
           }}
         />
 
-        
+
         <div
           className="absolute w-0.5 h-20 bg-red-500 left-1/2 top-1/2 origin-bottom"
           style={{
@@ -69,14 +75,14 @@ export default function CurrentTimeAlarm() {
         <div className="absolute w-3 h-3 bg-black rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-      
+
       <div className="text-sm text-gray-600 font-medium">
-        {time.toLocaleDateString("ar-EG", {
+        {time?.toLocaleDateString("ar-EG", {
           weekday: "long",
           year: "numeric",
           month: "long",
           day: "numeric",
-        })}
+        }) ?? ""}
       </div>
     </div>
   );
