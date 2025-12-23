@@ -14,8 +14,7 @@ export default function ToastProvider() {
       draggable
       rtl
       theme="auto"
-      
-       className='text-white'
+       
     />
   );
 }
