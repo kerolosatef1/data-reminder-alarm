@@ -8,7 +8,7 @@ export const dynamic = "force-static";
 
 export default function HomePage() {
   return (
-    <DataProvider initialData={initialReminders}>
+    <DataProvider >
       <main className="max-w-2xl mx-auto py-8 px-4 space-y-6">
         <h1 className="text-2xl font-bold text-center">
           Data Reminder 

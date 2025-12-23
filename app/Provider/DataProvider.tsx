@@ -1,11 +1,7 @@
 "use client";
 
 import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
+  createContext,useContext,useEffect,useState,ReactNode,
 } from "react";
 import { Reminder } from "@/Type/Reminder";
 
@@ -15,29 +11,27 @@ type DataContextType = {
   updateReminder: (r: Reminder) => void;
   deleteReminder: (id: string) => void;
 };
+
 const DataContext = createContext<DataContextType | null>(null);
-export function DataProvider({
-  children,
-  initialData,
-}: {
-  children: ReactNode;
-  initialData: Reminder[];
-}) {
+
+export function DataProvider({ children }: { children: ReactNode }) {
   const [reminders, setReminders] = useState<Reminder[]>([]);
 
-  // Load from localStorage
+  
   useEffect(() => {
     const stored = localStorage.getItem("reminders");
     if (stored) {
       setReminders(JSON.parse(stored));
-    } else {
-      setReminders(initialData);
     }
-  }, [initialData]);
+  }, []);
 
-  // Save to localStorage
+ 
   useEffect(() => {
-    localStorage.setItem("reminders", JSON.stringify(reminders));
+    if (reminders.length > 0) {
+      localStorage.setItem("reminders", JSON.stringify(reminders));
+    } else {
+      localStorage.removeItem("reminders");
+    }
   }, [reminders]);
 
   const addReminder = (r: Reminder) =>
@@ -52,7 +46,8 @@ export function DataProvider({
     setReminders((prev) => prev.filter((r) => r.id !== id));
 
   return (
-    <DataContext.Provider value={{ reminders, addReminder, updateReminder, deleteReminder }}
+    <DataContext.Provider
+      value={{ reminders, addReminder, updateReminder, deleteReminder }}
     >
       {children}
     </DataContext.Provider>
