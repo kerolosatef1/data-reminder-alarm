@@ -8,7 +8,7 @@ export default function ReminderList() {
 
   if (!reminders.length) {
     return (
-      <p className="text-center text-gray-500 mt-6">
+      <p className="text-center text-gray-700 mt-6">
         لا يوجد تذكيرات حاليًا
       </p>
     );
