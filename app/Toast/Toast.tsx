@@ -15,6 +15,7 @@ export default function ToastProvider() {
       rtl
       theme="auto"
        toastClassName="font-arabic text-gray-900 dark:text-white"
+       className='bg-white'
     />
   );
 }
